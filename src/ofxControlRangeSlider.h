@@ -12,7 +12,7 @@ public:
 	ofEvent< pair<float, float> > valueChanged;
 	
 	ofxControlRangeSlider(string label, float min_, float max_, 
-						  int x, int y, int width, int height)
+						  int x, int y, int width = 180, int height = 14)
 		: ofxControlWidget(label, x, y, width, height)
 	{
 		minValue = NULL;

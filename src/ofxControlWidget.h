@@ -19,6 +19,9 @@ public:
 
 	inline int getID() { return widgetID; }
 	
+	inline const string& getLabel() const { return label; }
+	inline void setLabel(const string &label_) { label = label_; }
+	
 	inline void setEnable(bool yn) { enable = yn; }
 	inline bool isEnable() { return enable; }
 	

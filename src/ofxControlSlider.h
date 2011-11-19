@@ -12,7 +12,7 @@ public:
 	ofEvent<float> valueChanged;
 	
 	ofxControlSlider(string label, float min_, float max_,
-					 int x, int y, int width, int height)
+					 int x, int y, int width = 180, int height = 14)
 		: ofxControlWidget(label, x, y, width, height)
 	{
 		value = NULL;
@@ -48,6 +48,7 @@ public:
 
 			ofRectangle r = ofxControlGetStringBoundingBox(label, 0, 0);
 			float c = (h() - r.height) * 0.5;
+			
 			ofxControlDrawBitmapString(label, x() + w() + 4, y() + c);
 			
 			if (value)

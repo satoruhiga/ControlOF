@@ -13,19 +13,21 @@ class ofxControl
 	
 	static ofxControl *currentControl;
 	static int currentWidgetID;
-	static ofxControlWidget *currentWidget;
-	static ofxControlWidget *responderWidget;
+	ofxControlWidget *currentWidget;
+	ofxControlWidget *responderWidget;
 	
 public:
 
 	static ofxControl& getCurrentControl() { return *currentControl; }
 	void makeCurrentControl() { currentControl = this; }
 	
-	static ofxControlWidget* getCurrentResponderWidget() { return responderWidget; }
+	ofxControlWidget* getCurrentResponderWidget() { return responderWidget; }
 	
 	ofxControl();
+	~ofxControl();
 
-	void setup();
+	void setup(bool autodraw = true);
+	
 	void update();
 	void draw();
 	void hittest();
@@ -40,8 +42,9 @@ public:
 	
 	// events
 	
-	void enableEvents();	
-	void disableEvents();
+	void enableAllEvents();
+	void enableBaseicEvents();
+	void disableAllEvents();
 
 	void onUpdate(ofEventArgs&);
 	void onDraw(ofEventArgs&);
@@ -54,23 +57,29 @@ public:
 	
 protected:
 	
-	ofMatrix4x4 projection, modelview;
 	map<GLuint, ofxControlWidget*> widgets;
 	
 	bool visible;
 	int toggleKey;
 	
+	void registerWidget(ofxControlWidget *w);
+	void unregisterWidget(ofxControlWidget *w);
+	
+private:
+	
+	GLint viewport[4];
+	GLdouble projection[16], modelview[16];
+	GLuint currentWidgetDepth;
+	
 	struct Selection
 	{
 		GLuint min_depth, max_depth;
 		vector<GLuint> name_stack;
-		void print();
 	};
 	
 	static bool sort_by_depth(const ofxControl::Selection &a, const ofxControl::Selection &b);
-	vector<GLuint> pickup(int x, int y);
-	
-	void registerWidget(ofxControlWidget *w);
-	void unregisterWidget(ofxControlWidget *w);
+	vector<Selection> pickup(int x, int y);
+
+	ofVec2f getLocalPosition(int x, int y);
 	
 };

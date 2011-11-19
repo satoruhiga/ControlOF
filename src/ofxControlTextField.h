@@ -15,7 +15,7 @@ public:
 	ofEvent<string> valueChanged;
 	ofEvent<string> enterPressed;
 	
-	ofxControlTextField(string label, int x, int y, int w = 200, int h = 20)
+	ofxControlTextField(string label, int x, int y, int w = 180, int h = 20)
 		: ofxControlWidget(label, x, y, w, h)
 	{
 		value = NULL;
@@ -34,11 +34,14 @@ public:
 		setTextColor();
 		if (value)
 		{
-			ofxControlDrawBitmapString(*value, x() + 4, y() + 6);
+			ofRectangle r = ofxControlGetStringBoundingBox(*value, 0, 0);
+			float c = (h() - r.height) * 0.5;
+
+			ofxControlDrawBitmapString(*value, x() + 4, y() + c);
 			
 			if (editable)
 			{
-				if (ofxControl::getCurrentResponderWidget() == this)
+				if (ofxControl::getCurrentControl().getCurrentResponderWidget() == this)
 				{
 					caretPos = ofClamp(caretPos, 0, (*value).size());
 					

@@ -44,8 +44,11 @@ public:
 		
 		ofRect(x(), y(), w(), h());
 		
+		ofRectangle r = ofxControlGetStringBoundingBox(label, 0, 0);
+		float c = (h() - r.height) * 0.5;
+		
 		setTextColor();
-		ofxControlDrawBitmapString(label, x() + 4, y() + 7);
+		ofxControlDrawBitmapString(label, x() + 4, y() + c);
 		ofPopStyle();
 	}
 
