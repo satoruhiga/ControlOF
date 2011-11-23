@@ -2,16 +2,17 @@
 
 #include "ofxControlWidget.h"
 
+template <typename T>
 class ofxControlSlider : public ofxControlWidget
 {
-	float *value;
-	float min, max;
+	T *value;
+	T min, max;
 	
 public:
 	
-	ofEvent<float> valueChanged;
+	ofEvent<T> valueChanged;
 	
-	ofxControlSlider(string label, float min_, float max_,
+	ofxControlSlider(string label, T min_, T max_,
 					 int x, int y, int width = 180, int height = 14)
 		: ofxControlWidget(label, x, y, width, height)
 	{
@@ -30,7 +31,7 @@ public:
 		
 		setForegroundColor();
 		
-		float val = min;
+		T val = min;
 		
 		if (value)
 		{
@@ -46,10 +47,10 @@ public:
 			
 			setTextColor();
 
-			ofRectangle r = ofxControlGetStringBoundingBox(label, 0, 0);
+			ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
 			float c = (h() - r.height) * 0.5;
 			
-			ofxControlDrawBitmapString(label, x() + w() + 4, y() + c);
+			ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
 			
 			if (value)
 				ofxControlDrawBitmapString(ofToString(val, 2), x() + 4, y() + c);
@@ -62,7 +63,7 @@ public:
 			ofRect(x(), y() + h(), w(), yy);
 
 			setTextColor();
-			ofxControlDrawBitmapString(label, x(), y() + h() + 4);
+			ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
 			
 			if (value)
 				ofxControlDrawBitmapString(ofToString(val, 2), x() + w() + 4, y() + h() + yy - 8);
@@ -85,6 +86,7 @@ public:
 		}
 		else
 		{
+			
 			*value = ofMap(y_, h(), 0, min, max, true);
 		}
 		
@@ -115,7 +117,39 @@ public:
 		}
 	}
 	
-	ofxControlSlider* bind(float *value_) { value = value_; return this; }
-	ofxControlSlider* unbind() { value = NULL; return this; }
+	ofxControlSlider<T>* bind(T *value_) { value = value_; return this; }
+	ofxControlSlider<T>* unbind() { value = NULL; return this; }
 
+	int getWidth()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		
+		if (w() > h())
+		{
+			return w() + r.width + 4;
+		}
+		else
+		{
+			return std::max(w(), (int)r.width);
+		}
+	}
+	
+	int getHeight()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		
+		if (h() >= w())
+		{
+			return h() + r.height + 4;
+		}
+		else
+		{
+			return std::max(h(), (int)r.height);
+		}
+	}
+	
 };
+
+typedef ofxControlSlider<float> ofxControlSliderF;
+typedef ofxControlSlider<int> ofxControlSliderI;
+

@@ -2,8 +2,6 @@
 
 #include "ofMain.h"
 
-#include "ofxControl.h"
-
 class ofxControl;
 
 class ofxControlWidget
@@ -20,7 +18,16 @@ public:
 	inline int getID() { return widgetID; }
 	
 	inline const string& getLabel() const { return label; }
-	inline void setLabel(const string &label_) { label = label_; }
+	inline const string& getDisplayLabel() const { return displayLabel; }
+	
+	void setLabel(const string &label_) 
+	{
+		label = label_; 
+		for (int i = 0; i < label.size(); i++) { displayLabel += toupper(label[i]); }
+	}
+	
+	virtual int getWidth() { return rect.width; }
+	virtual int getHeight() { return rect.height; }
 	
 	inline void setEnable(bool yn) { enable = yn; }
 	inline bool isEnable() { return enable; }
@@ -41,22 +48,25 @@ public:
 	
 	void makeCurrentWidget();
 	
+	void linebreak(int extra_margine = 0);
+	
 protected:
 	
 	bool enable;
 	ofRectangle rect;
-	string label;
+	string label, displayLabel;
 	ofColor textColor, foregroundColor, backgroundColor;
-	
-	bool isHover() { return hover; }
-	bool isDown() { return down; }
 	
 	int x() const { return rect.x; }
 	int y() const { return rect.y; }
 	int w() const { return rect.width; }
 	int h() const { return rect.height; }
 	
+	bool isHover() { return hover; }
+	bool isDown() { return down; }
+	
 	inline void setTextColor() { ofSetColor(textColor); }
+	
 	inline void setForegroundColor()
 	{
 		ofColor c = foregroundColor;
@@ -71,8 +81,11 @@ protected:
 		
 		ofSetColor(c);
 	}
+	
 	inline void setBackgroundColor() { ofSetColor(backgroundColor); }
 
+	bool isResponder();
+	
 private:
 	int widgetID;
 	bool hover, down;

@@ -155,24 +155,29 @@ public:
 
 static ofxControlText *t = NULL;
 
-void ofxControlDrawBitmapString(const string &text, int x, int y)
+static void init_font()
 {
 	if (t == NULL)
 	{
 		t = new ofxControlText();
 		t->loadFont(standard58);
 	}
-	
+}
+
+void ofxControlDrawBitmapString(const string &text, int x, int y)
+{
+	init_font();
 	t->drawString(text, x, y);
 }
 
 ofRectangle ofxControlGetStringBoundingBox(const string &text, int x, int y)
 {
-	if (t == NULL)
-	{
-		t = new ofxControlText();
-		t->loadFont(standard58);
-	}
-	
+	init_font();
 	return t->getStringBoundingBox(text, x, y);
+}
+
+int ofxControlGetStringLineHeight()
+{
+	init_font();
+	return t->lineHeight;
 }

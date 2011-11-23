@@ -2,23 +2,24 @@
 
 #include "ofxControlWidget.h"
 
+template <typename T>
 class ofxControlRangeSlider : public ofxControlWidget
 {
-	float *minValue, *maxValue;
-	float min, max;
+	T *minValue, *maxValue;
+	T min, max;
 	
 public:
 	
-	ofEvent< pair<float, float> > valueChanged;
+	ofEvent< pair<T, T> > valueChanged;
 	
-	ofxControlRangeSlider(string label, float min_, float max_, 
+	ofxControlRangeSlider(string label, T min_, T max_, 
 						  int x, int y, int width = 180, int height = 14)
 		: ofxControlWidget(label, x, y, width, height)
 	{
 		minValue = NULL;
 		maxValue = NULL;
-		min = min_;
-		max = max_;
+		min = std::min(min_, max_);
+		max = std::max(max_, min_);
 	}
 	
 	void update()
@@ -41,8 +42,8 @@ public:
 		
 		setForegroundColor();
 		
-		float minVal = min;
-		float maxVal = max;
+		T minVal = min;
+		T maxVal = max;
 		
 		if (minValue)
 		{
@@ -58,9 +59,9 @@ public:
 			
 			setTextColor();
 			
-			ofRectangle r = ofxControlGetStringBoundingBox(label, 0, 0);
+			ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
 			float c = (h() - r.height) * 0.5;
-			ofxControlDrawBitmapString(label, x() + w() + 4, y() + c);
+			ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
 			
 			if (minValue)
 			{
@@ -85,7 +86,7 @@ public:
 			ofRect(x(), y() + h() + yy1, w(), yy2 - yy1);
 
 			setTextColor();
-			ofxControlDrawBitmapString(label, x(), y() + h() + 4);
+			ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
 			
 			if (minValue)
 			{
@@ -107,7 +108,7 @@ public:
 	{
 		if (!enable || !minValue) return;
 		
-		pair<float, float> temp(*minValue, *maxValue);
+		pair<T, T> temp(*minValue, *maxValue);
 		
 		if (w() > h())
 		{
@@ -136,9 +137,9 @@ public:
 			}
 		}
 		
-		if (temp != pair<float, float>(*minValue, *maxValue))
+		if (temp != pair<T, T>(*minValue, *maxValue))
 		{
-			temp = pair<float, float>(*minValue, *maxValue);
+			temp = pair<T, T>(*minValue, *maxValue);
 			ofNotifyEvent(valueChanged, temp);
 		}
 	}
@@ -147,7 +148,7 @@ public:
 	{
 		if (!enable || !minValue) return;
 		
-		pair<float, float> temp(*minValue, *maxValue);
+		pair<T, T> temp(*minValue, *maxValue);
 		
 		if (w() > h())
 		{
@@ -176,20 +177,51 @@ public:
 			}
 		}
 		
-		if (temp != pair<float, float>(*minValue, *maxValue))
+		if (temp != pair<T, T>(*minValue, *maxValue))
 		{
-			temp = pair<float, float>(*minValue, *maxValue);
+			temp = pair<T, T>(*minValue, *maxValue);
 			ofNotifyEvent(valueChanged, temp);
 		}
 	}
 	
-	ofxControlRangeSlider* bind(float *minValue_, float *maxValue_)
+	ofxControlRangeSlider<T>* bind(T *minValue_, T *maxValue_)
 	{
 		minValue = minValue_; 
 		maxValue = maxValue_; 
 		return this;
 	}
 	
-	ofxControlRangeSlider* unbind() { minValue = NULL; maxValue = NULL; return this; }
+	ofxControlRangeSlider<T>* unbind() { minValue = NULL; maxValue = NULL; return this; }
 
+	int getWidth()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		
+		if (w() > h())
+		{
+			return w() + r.width + 4;
+		}
+		else
+		{
+			return std::max(w(), (int)r.width);
+		}
+	}
+	
+	int getHeight()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		
+		if (h() >= w())
+		{
+			return h() + r.height + 4;
+		}
+		else
+		{
+			return std::max(h(), (int)r.height);
+		}
+	}
+	
 };
+
+typedef ofxControlRangeSlider<float> ofxControlRangeSliderF;
+typedef ofxControlRangeSlider<int> ofxControlRangeSliderI;

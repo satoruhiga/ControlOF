@@ -41,7 +41,7 @@ public:
 			
 			if (editable)
 			{
-				if (ofxControl::getCurrentControl().getCurrentResponderWidget() == this)
+				if (isResponder())
 				{
 					caretPos = ofClamp(caretPos, 0, (*value).size());
 					
@@ -64,7 +64,7 @@ public:
 		ofRect(x(), y(), w(), h());
 		
 		setTextColor();
-		ofxControlDrawBitmapString(label, x(), y() + h() + 4);
+		ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
 
 		ofPopStyle();
 	}
@@ -110,4 +110,11 @@ public:
 	ofxControlTextField* unbind() { value = NULL; return this; }
 	
 	ofxControlTextField* setEditable(bool yn) { editable = yn; return this; }
+	
+	int getHeight()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		return h() + r.height + 4;
+	}
+	
 };

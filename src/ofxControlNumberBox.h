@@ -2,26 +2,22 @@
 
 #include "ofxControlWidget.h"
 
+template <typename T>
 class ofxControlNumberBox : public ofxControlWidget
 {
 private:
 	
-	float *value;
-	float min, max;
+	T *value;
+	T min, max;
 	bool clamp;
 	float temp;
 	
 public:
 	
-	ofEvent<float> valueChanged;
+	ofEvent<T> valueChanged;
 	
 	ofxControlNumberBox(string label, int x, int y, int w = 80, int h = 14)
 		: ofxControlWidget(label, x, y, w, h), value(NULL), clamp(false) {}
-	
-	~ofxControlNumberBox()
-	{
-		value = NULL;
-	}
 	
 	void draw()
 	{
@@ -31,7 +27,7 @@ public:
 		setBackgroundColor();
 		ofRect(x(), y(), w(), h());
 		
-		float val = 0;
+		T val = 0;
 		
 		if (value)
 			val = *value;
@@ -54,14 +50,16 @@ public:
 		glPopMatrix();
 		
 		setTextColor();
-		ofxControlDrawBitmapString(label, x(), y() + h() + 4);
+		// ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
+		float c = (h() - r.height) * 0.5;
+		ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
 		ofPopStyle();
 	}
 
-	ofxControlNumberBox* bind(float *value_) { value = value_; return this; }
+	ofxControlNumberBox* bind(T *value_) { value = value_; return this; }
 	ofxControlNumberBox* unbind() { value = NULL; return this; }
 	
-	ofxControlNumberBox* setMinMax(float min_, float max_)
+	ofxControlNumberBox* setMinMax(T min_, T max_)
 	{
 		min = min_;
 		max = max_;
@@ -87,4 +85,13 @@ public:
 		
 		temp = y_;
 	}
+	
+	int getWidth()
+	{
+		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
+		return w() + r.width + 4;
+	}
 };
+
+typedef ofxControlNumberBox<float> ofxControlNumberBoxF;
+typedef ofxControlNumberBox<int> ofxControlNumberBoxI;

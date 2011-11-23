@@ -5,6 +5,12 @@
 #include "ofxControlBitmapString.h"
 #include "ofxControlWidget.h"
 
+#include "ofxControlButton.h"
+#include "ofxControlSlider.h"
+#include "ofxControlRangeSlider.h"
+#include "ofxControlNumberBox.h"
+#include "ofxControlTextField.h"
+
 class ofxControlWidget;
 
 class ofxControl
@@ -13,6 +19,7 @@ class ofxControl
 	
 	static ofxControl *currentControl;
 	static int currentWidgetID;
+	
 	ofxControlWidget *currentWidget;
 	ofxControlWidget *responderWidget;
 	
@@ -32,15 +39,34 @@ public:
 	void draw();
 	void hittest();
 	
-	void begin();
-	void end();
-	
 	void setVisible(bool yn);
 	bool isVisible() { return visible; }
 	
 	void setToggleKey(int key);
 	
-	// events
+public: // autolayout
+	
+	void begin(int x = 0, int y = 0);
+	void end();
+
+	void setOffset(int x, int y);
+	void linebreak(int extra_margine = 0);
+	
+	ofxControlButton* addButton(string label, int width = 80, int height = 20);
+	ofxControlButton* addButton(string label, bool &value, int width = 80, int height = 20);
+	
+	ofxControlSliderF* addSliderF(string label, float &value, float min, float max, int width = 180, int height = 14);
+	ofxControlSliderI* addSliderI(string label, int &value, int min, int max, int width = 180, int height = 14);
+	
+	ofxControlRangeSliderF* addRangeSliderF(string label, float &minValue, float &maxValue, float min, float max, int width = 180, int height = 14);
+	ofxControlRangeSliderI* addRangeSliderI(string label, int &minValue, int &maxValue, int min, int max, int width = 180, int height = 14);
+	
+	ofxControlNumberBoxF* addNumberBoxF(string label, float &value, int width = 80, int height = 14);
+	ofxControlNumberBoxI* addNumberBoxI(string label, int &value, int width = 80, int height = 14);
+	
+	ofxControlTextField* addTextField(string label, string &value, int width = 180, int height = 20);
+	
+public: // events
 	
 	void enableAllEvents();
 	void enableBaseicEvents();
@@ -82,4 +108,13 @@ private:
 
 	ofVec2f getLocalPosition(int x, int y);
 	
+private:
+	
+	int autoLayoutCurrentOffsetX, autoLayoutCurrentOffsetY;
+	int autoLayoutStartX, autoLayoutStartY;
+	int autoLayoutMarginX, autoLayoutMarginY;
+	
+	vector<ofxControlWidget*> currentLineWidgets;
+	
+	void applyAutoLayout(ofxControlWidget *w);
 };

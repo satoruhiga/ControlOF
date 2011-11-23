@@ -11,11 +11,23 @@ ofxControl::ofxControl()
 	visible = true;
 	currentWidget = NULL;
 	responderWidget = NULL;
+	
+	autoLayoutStartX = 0;
+	autoLayoutStartY = 0;
+	
+	autoLayoutMarginX = 20;
+	autoLayoutMarginY = 10;
 }
 
 ofxControl::~ofxControl()
 {
-	disableAllEvents();
+	try
+	{
+		disableAllEvents();
+	}
+	catch (...)
+	{
+	}
 	
 	map<GLuint, ofxControlWidget*> t = widgets;
 	
@@ -106,16 +118,6 @@ void ofxControl::hittest()
 	}
 	
 	ofPopStyle();
-}
-
-void ofxControl::begin()
-{
-	makeCurrentControl();
-}
-
-void ofxControl::end()
-{
-	currentControl = NULL;
 }
 
 void ofxControl::setVisible(bool yn)
@@ -413,6 +415,7 @@ vector<ofxControl::Selection> ofxControl::pickup(int x, int y)
 	GLuint selectBuf[BUFSIZE];
 	GLint hits;
 	
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
 	ofPushView();
 	
 	glEnable(GL_DEPTH_TEST);
@@ -442,6 +445,7 @@ vector<ofxControl::Selection> ofxControl::pickup(int x, int y)
 	hits = glRenderMode(GL_RENDER);
 	
 	ofPopView();
+	glPopAttrib();
 	
 	if (hits <= 0) return vector<Selection>();
 	
@@ -465,8 +469,6 @@ vector<ofxControl::Selection> ofxControl::pickup(int x, int y)
 		
 		picked_stack.push_back(d);
 		
-		// d.print();
-		
 		ptr += (3 + num_names);
 	}
 	
@@ -483,5 +485,129 @@ ofVec2f ofxControl::getLocalPosition(int x, int y)
 				 modelview, projection, viewport,
 				 &ox, &oy, &oz);
 	
+	oy = viewport[3] - oy;
+	
 	return ofVec2f(ox, oy);
+}
+
+
+#pragma SHORTCUTS
+
+ofxControlButton* ofxControl::addButton(string label, int width, int height)
+{
+	ofxControlButton *o = new ofxControlButton(label, 0, 0, width, height);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlButton* ofxControl::addButton(string label, bool &value, int width, int height)
+{
+	ofxControlButton *o = new ofxControlButton(label, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlSliderF* ofxControl::addSliderF(string label, float &value, float min, float max, int width, int height) 
+{
+	ofxControlSliderF *o = new ofxControlSliderF(label, min, max, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlSliderI* ofxControl::addSliderI(string label, int &value, int min, int max, int width, int height)
+{
+	ofxControlSliderI *o = new ofxControlSliderI(label, min, max, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlRangeSliderF* ofxControl::addRangeSliderF(string label, float &minValue, float &maxValue, float min, float max, int width, int height)
+{
+	ofxControlRangeSliderF *o = new ofxControlRangeSliderF(label, min, max, 0, 0, width, height);
+	o->bind(&minValue, &maxValue);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlRangeSliderI* ofxControl::addRangeSliderI(string label, int &minValue, int &maxValue, int min, int max, int width, int height)
+{
+	ofxControlRangeSliderI *o = new ofxControlRangeSliderI(label, min, max, 0, 0, width, height);
+	o->bind(&minValue, &maxValue);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlNumberBoxF* ofxControl::addNumberBoxF(string label, float &value, int width, int height)
+{
+	ofxControlNumberBoxF *o = new ofxControlNumberBoxF(label, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlNumberBoxI* ofxControl::addNumberBoxI(string label, int &value, int width, int height)
+{
+	ofxControlNumberBoxI *o = new ofxControlNumberBoxI(label, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+ofxControlTextField* ofxControl::addTextField(string label, string &value, int width, int height)
+{
+	ofxControlTextField *o = new ofxControlTextField(label, 0, 0, width, height);
+	o->bind(&value);
+	applyAutoLayout(o);
+	return o;
+}
+
+#pragma mark AUTOLAYOUT
+
+void ofxControl::begin(int x_, int y_)
+{
+	makeCurrentControl();
+	
+	setOffset(x_, y_);
+}
+
+void ofxControl::end()
+{
+	currentControl = NULL;
+	currentLineWidgets.clear();
+}
+
+void ofxControl::linebreak(int extra_margine)
+{
+	int lineheight = 0;
+	
+	for (int i = 0; i < currentLineWidgets.size(); i++)
+	{
+		lineheight = std::max(currentLineWidgets[i]->getHeight(), lineheight);
+	}
+	
+	autoLayoutCurrentOffsetY += lineheight + autoLayoutMarginY + extra_margine;
+	autoLayoutCurrentOffsetX = autoLayoutStartX;
+	
+	currentLineWidgets.clear();
+}
+
+void ofxControl::setOffset(int x, int y)
+{
+	currentLineWidgets.clear();
+	
+	autoLayoutStartX = autoLayoutCurrentOffsetX = x;
+	autoLayoutStartY = autoLayoutCurrentOffsetY = y;
+}
+
+void ofxControl::applyAutoLayout(ofxControlWidget *w)
+{
+	w->rect.x = autoLayoutCurrentOffsetX;
+	w->rect.y = autoLayoutCurrentOffsetY;
+	
+	autoLayoutCurrentOffsetX += w->getWidth() + autoLayoutMarginX;
+	
+	currentLineWidgets.push_back(w);
 }

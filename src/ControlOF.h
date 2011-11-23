@@ -1,6 +1,8 @@
 #pragma once
 
+#include "ofxControl.h"
 #include "ofxControlBitmapString.h"
+
 #include "ofxControlWidget.h"
 
 #include "ofxControlButton.h"
