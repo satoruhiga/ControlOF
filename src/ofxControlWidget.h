@@ -23,6 +23,7 @@ public:
 	void setLabel(const string &label_) 
 	{
 		label = label_; 
+		displayLabel.clear();
 		for (int i = 0; i < label.size(); i++) { displayLabel += toupper(label[i]); }
 	}
 	
