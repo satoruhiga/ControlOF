@@ -147,43 +147,43 @@ void ofxControl::unregisterWidget(ofxControlWidget *w)
 
 void ofxControl::enableBaseicEvents()
 {
-	ofAddListener(ofEvents.update, this, &ofxControl::onUpdate);
+	ofAddListener(ofEvents().update, this, &ofxControl::onUpdate);
 	
-	ofAddListener(ofEvents.mousePressed, this, &ofxControl::onMousePressed);
-	ofAddListener(ofEvents.mouseReleased, this, &ofxControl::onMouseReleased);
-	ofAddListener(ofEvents.mouseMoved, this, &ofxControl::onMouseMoved);
-	ofAddListener(ofEvents.mouseDragged, this, &ofxControl::onMouseDragged);
+	ofAddListener(ofEvents().mousePressed, this, &ofxControl::onMousePressed);
+	ofAddListener(ofEvents().mouseReleased, this, &ofxControl::onMouseReleased);
+	ofAddListener(ofEvents().mouseMoved, this, &ofxControl::onMouseMoved);
+	ofAddListener(ofEvents().mouseDragged, this, &ofxControl::onMouseDragged);
 	
-	ofAddListener(ofEvents.keyPressed, this, &ofxControl::onKeyPressed);
-	ofAddListener(ofEvents.keyReleased, this, &ofxControl::onKeyReleased);
+	ofAddListener(ofEvents().keyPressed, this, &ofxControl::onKeyPressed);
+	ofAddListener(ofEvents().keyReleased, this, &ofxControl::onKeyReleased);
 }
 
 void ofxControl::enableAllEvents()
 {
-	ofAddListener(ofEvents.update, this, &ofxControl::onUpdate);
-	ofAddListener(ofEvents.draw, this, &ofxControl::onDraw);
+	ofAddListener(ofEvents().update, this, &ofxControl::onUpdate);
+	ofAddListener(ofEvents().draw, this, &ofxControl::onDraw);
 	
-	ofAddListener(ofEvents.mousePressed, this, &ofxControl::onMousePressed);
-	ofAddListener(ofEvents.mouseReleased, this, &ofxControl::onMouseReleased);
-	ofAddListener(ofEvents.mouseMoved, this, &ofxControl::onMouseMoved);
-	ofAddListener(ofEvents.mouseDragged, this, &ofxControl::onMouseDragged);
+	ofAddListener(ofEvents().mousePressed, this, &ofxControl::onMousePressed);
+	ofAddListener(ofEvents().mouseReleased, this, &ofxControl::onMouseReleased);
+	ofAddListener(ofEvents().mouseMoved, this, &ofxControl::onMouseMoved);
+	ofAddListener(ofEvents().mouseDragged, this, &ofxControl::onMouseDragged);
 	
-	ofAddListener(ofEvents.keyPressed, this, &ofxControl::onKeyPressed);
-	ofAddListener(ofEvents.keyReleased, this, &ofxControl::onKeyReleased);
+	ofAddListener(ofEvents().keyPressed, this, &ofxControl::onKeyPressed);
+	ofAddListener(ofEvents().keyReleased, this, &ofxControl::onKeyReleased);
 }
 
 void ofxControl::disableAllEvents()
 {
-	ofRemoveListener(ofEvents.update, this, &ofxControl::onUpdate);
-	ofRemoveListener(ofEvents.draw, this, &ofxControl::onDraw);
+	ofRemoveListener(ofEvents().update, this, &ofxControl::onUpdate);
+	ofRemoveListener(ofEvents().draw, this, &ofxControl::onDraw);
 	
-	ofRemoveListener(ofEvents.mousePressed, this, &ofxControl::onMousePressed);
-	ofRemoveListener(ofEvents.mouseReleased, this, &ofxControl::onMouseReleased);
-	ofRemoveListener(ofEvents.mouseMoved, this, &ofxControl::onMouseMoved);
-	ofRemoveListener(ofEvents.mouseDragged, this, &ofxControl::onMouseDragged);
+	ofRemoveListener(ofEvents().mousePressed, this, &ofxControl::onMousePressed);
+	ofRemoveListener(ofEvents().mouseReleased, this, &ofxControl::onMouseReleased);
+	ofRemoveListener(ofEvents().mouseMoved, this, &ofxControl::onMouseMoved);
+	ofRemoveListener(ofEvents().mouseDragged, this, &ofxControl::onMouseDragged);
 	
-	ofRemoveListener(ofEvents.keyPressed, this, &ofxControl::onKeyPressed);
-	ofRemoveListener(ofEvents.keyReleased, this, &ofxControl::onKeyReleased);
+	ofRemoveListener(ofEvents().keyPressed, this, &ofxControl::onKeyPressed);
+	ofRemoveListener(ofEvents().keyReleased, this, &ofxControl::onKeyReleased);
 }
 
 void ofxControl::onUpdate(ofEventArgs&)

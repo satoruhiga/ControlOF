@@ -23,17 +23,17 @@ void testApp::setup()
 	
 	c.begin();
 	
-	(new ofxControlSlider("SLIDER 1", 0, 255, 10, 10, 100, 14))->bind(&slider_value);
-	(new ofxControlSlider("SLIDER 2", 0, 255, 10, 40, 100, 100))->bind(&slider_value);
+	(new ofxControlSliderF("SLIDER 1", 0, 255, 10, 10, 100, 14))->bind(&slider_value);
+	(new ofxControlSliderF("SLIDER 2", 0, 255, 10, 40, 100, 100))->bind(&slider_value);
 	
 	ofAddListener((new ofxControlButton("RANDOM", 10, 160, 100))->pressed, this, &testApp::onButtonPressed);
 
 	(new ofxControlTextField("BGCOLOR", 180, 10))->bind(&backgroundColorString)->setEditable(false);
 	(new ofxControlTextField("FRAMERATE", 180, 60))->bind(&framerateString)->setEditable(false);
 	
-	(new ofxControlRangeSlider("RANGE", 0, 255, 450, 10, 180, 14))->bind(&minValue, &maxValue);
-	(new ofxControlNumberBox("MIN", 450, 40))->bind(&minValue);
-	(new ofxControlNumberBox("MAX", 550, 40))->bind(&maxValue);
+	(new ofxControlRangeSliderF("RANGE", 0, 255, 450, 10, 180, 14))->bind(&minValue, &maxValue);
+	(new ofxControlNumberBoxF("MIN", 450, 40))->bind(&minValue);
+	(new ofxControlNumberBoxF("MAX", 550, 40))->bind(&maxValue);
 	
 	windowTitleString = "title";
 	(new ofxControlTextField("SET WINDOW TITLE", 10, 300))->bind(&windowTitleString);
