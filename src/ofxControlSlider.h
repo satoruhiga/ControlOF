@@ -5,22 +5,22 @@
 template <typename T>
 class ofxControlSlider : public ofxControlWidget
 {
+	T default_value;
+	
 	T *value;
 	T min, max;
 	
 public:
 	
 	ofEvent<T> valueChanged;
-	
+
 	ofxControlSlider(string label, T min_, T max_,
 					 int x, int y, int width = 180, int height = 14)
-		: ofxControlWidget(label, x, y, width, height)
-	{
-		value = NULL;
-		min = min_;
-		max = max_;
-	}
+		: ofxControlWidget(label, x, y, width, height), default_value(min_), value(&default_value), min(min_), max(max_) {}
 	
+	T getValue() { return *value; }
+	void setValue(T v) { *value = v; }
+
 	void draw()
 	{
 		ofPushStyle();
@@ -55,7 +55,7 @@ public:
 			if (value)
 				ofxControlDrawBitmapString(ofToString(val, 2), x() + 4, y() + c);
 			else
-				ofxControlDrawBitmapString("NAN", x() + 4, y() + 2);
+				ofxControlDrawBitmapString("NULL", x() + 4, y() + 2);
 		}
 		else
 		{
@@ -68,7 +68,7 @@ public:
 			if (value)
 				ofxControlDrawBitmapString(ofToString(val, 2), x() + w() + 4, y() + h() + yy - 8);
 			else
-				ofxControlDrawBitmapString("NAN", x() + w() + 4, y() + h() + yy - 8);
+				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy - 8);
 		}
 		
 		ofPopStyle();
@@ -147,7 +147,6 @@ public:
 			return std::max(h(), (int)r.height);
 		}
 	}
-	
 };
 
 typedef ofxControlSlider<float> ofxControlSliderF;

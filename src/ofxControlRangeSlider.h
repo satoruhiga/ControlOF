@@ -5,6 +5,8 @@
 template <typename T>
 class ofxControlRangeSlider : public ofxControlWidget
 {
+	T default_min_value, default_max_value;
+	
 	T *minValue, *maxValue;
 	T min, max;
 	
@@ -16,11 +18,20 @@ public:
 						  int x, int y, int width = 180, int height = 14)
 		: ofxControlWidget(label, x, y, width, height)
 	{
-		minValue = NULL;
-		maxValue = NULL;
 		min = std::min(min_, max_);
 		max = std::max(max_, min_);
+		
+		default_min_value = min;
+		default_max_value = max;
+		
+		minValue = &default_min_value;
+		maxValue = &default_max_value;
 	}
+	
+	T getMinValue() { return *minValue; }
+	T getMaxValue() { return *maxValue; }
+	void setMinValue(T v) { *minValue = v; }
+	void setMaxValue(T v) { *maxValue = v; }
 	
 	void update()
 	{
@@ -73,10 +84,10 @@ public:
 			}
 			else
 			{
-				ofRectangle r1 = ofxControlGetStringBoundingBox("NAN", 0, 0);
+				ofRectangle r1 = ofxControlGetStringBoundingBox("NULL", 0, 0);
 				float yy = (h() - r1.height) * 0.5;
 
-				ofxControlDrawBitmapString("NAN", x() + 4, y() + yy);
+				ofxControlDrawBitmapString("NULL", x() + 4, y() + yy);
 			}
 		}
 		else
@@ -96,8 +107,8 @@ public:
 			}
 			else
 			{
-				ofxControlDrawBitmapString("NAN", x() + w() + 4, y() + h() + yy1 - 8);
-				ofxControlDrawBitmapString("NAN", x() + w() + 4, y() + h() + yy2 - 8);
+				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy1 - 8);
+				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy2 - 8);
 			}
 		}
 		

@@ -5,7 +5,7 @@
 template <typename T>
 class ofxControlNumberBox : public ofxControlWidget
 {
-private:
+	T default_value;
 	
 	T *value;
 	T min, max;
@@ -17,7 +17,10 @@ public:
 	ofEvent<T> valueChanged;
 	
 	ofxControlNumberBox(string label, int x, int y, int w = 80, int h = 14)
-		: ofxControlWidget(label, x, y, w, h), value(NULL), clamp(false) {}
+		: ofxControlWidget(label, x, y, w, h), default_value(0), value(&default_value), clamp(false) {}
+	
+	T getValue() { return *value; }
+	void setValue(T v) { *value = v; }
 	
 	void draw()
 	{

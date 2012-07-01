@@ -136,11 +136,18 @@ void ofxControl::registerWidget(ofxControlWidget *w)
 {
 	w->widgetID = currentWidgetID++;
 	widgets[w->widgetID] = w;
+	widget_map[w->getLabel()] = w;
 }
 
 void ofxControl::unregisterWidget(ofxControlWidget *w)
 {
 	widgets.erase(w->widgetID);
+}
+
+ofxControlWidget* ofxControl::getControl(string label)
+{
+	label = ofToUpper(label);
+	return widget_map[label];
 }
 
 #pragma mark EVENTS
@@ -500,66 +507,51 @@ ofxControlButton* ofxControl::addButton(string label, int width, int height)
 	return o;
 }
 
-ofxControlButton* ofxControl::addButton(string label, bool &value, int width, int height)
-{
-	ofxControlButton *o = new ofxControlButton(label, 0, 0, width, height);
-	o->bind(&value);
-	applyAutoLayout(o);
-	return o;
-}
-
-ofxControlSliderF* ofxControl::addSliderF(string label, float &value, float min, float max, int width, int height) 
+ofxControlSliderF* ofxControl::addSliderF(string label, float min, float max, int width, int height) 
 {
 	ofxControlSliderF *o = new ofxControlSliderF(label, min, max, 0, 0, width, height);
-	o->bind(&value);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlSliderI* ofxControl::addSliderI(string label, int &value, int min, int max, int width, int height)
+ofxControlSliderI* ofxControl::addSliderI(string label, int min, int max, int width, int height)
 {
 	ofxControlSliderI *o = new ofxControlSliderI(label, min, max, 0, 0, width, height);
-	o->bind(&value);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlRangeSliderF* ofxControl::addRangeSliderF(string label, float &minValue, float &maxValue, float min, float max, int width, int height)
+ofxControlRangeSliderF* ofxControl::addRangeSliderF(string label, float min, float max, int width, int height)
 {
 	ofxControlRangeSliderF *o = new ofxControlRangeSliderF(label, min, max, 0, 0, width, height);
-	o->bind(&minValue, &maxValue);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlRangeSliderI* ofxControl::addRangeSliderI(string label, int &minValue, int &maxValue, int min, int max, int width, int height)
+ofxControlRangeSliderI* ofxControl::addRangeSliderI(string label, int min, int max, int width, int height)
 {
 	ofxControlRangeSliderI *o = new ofxControlRangeSliderI(label, min, max, 0, 0, width, height);
-	o->bind(&minValue, &maxValue);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlNumberBoxF* ofxControl::addNumberBoxF(string label, float &value, int width, int height)
+ofxControlNumberBoxF* ofxControl::addNumberBoxF(string label, int width, int height)
 {
 	ofxControlNumberBoxF *o = new ofxControlNumberBoxF(label, 0, 0, width, height);
-	o->bind(&value);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlNumberBoxI* ofxControl::addNumberBoxI(string label, int &value, int width, int height)
+ofxControlNumberBoxI* ofxControl::addNumberBoxI(string label, int width, int height)
 {
 	ofxControlNumberBoxI *o = new ofxControlNumberBoxI(label, 0, 0, width, height);
-	o->bind(&value);
 	applyAutoLayout(o);
 	return o;
 }
 
-ofxControlTextField* ofxControl::addTextField(string label, string &value, int width, int height)
+ofxControlTextField* ofxControl::addTextField(string label, int width, int height)
 {
 	ofxControlTextField *o = new ofxControlTextField(label, 0, 0, width, height);
-	o->bind(&value);
 	applyAutoLayout(o);
 	return o;
 }

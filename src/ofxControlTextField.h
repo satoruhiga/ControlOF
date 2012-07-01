@@ -4,8 +4,10 @@
 
 class ofxControlTextField : public ofxControlWidget
 {
+	string default_value;
+	
 	string *value;
-	float defaultValue;
+	
 	float min, max;
 	int caretPos;
 	bool editable;
@@ -18,10 +20,13 @@ public:
 	ofxControlTextField(string label, int x, int y, int w = 180, int h = 20)
 		: ofxControlWidget(label, x, y, w, h)
 	{
-		value = NULL;
+		value = &default_value;
 		editable = true;
 		caretPos = 0;
 	}
+	
+	string getValue() { return *value; }
+	void setValue(const string& v) { *value = v; }
 	
 	void draw()
 	{

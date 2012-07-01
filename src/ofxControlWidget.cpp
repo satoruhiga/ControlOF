@@ -9,8 +9,6 @@ ofColor ofxControlWidget::defaultTextColor(200),
 ofxControlWidget::ofxControlWidget(string label_, int x_, int y_, int w_, int h_)
 	: parent(NULL), hover(false), down(false), enable(true)
 {
-	ofxControl::getCurrentControl().registerWidget(this);
-	
 	setLabel(label_);
 	
 	rect.set(x_, y_ ,w_, h_);
@@ -18,11 +16,20 @@ ofxControlWidget::ofxControlWidget(string label_, int x_, int y_, int w_, int h_
 	textColor = defaultTextColor;
 	foregroundColor = defaultForegroundColor;
 	backgroundColor = defaultBackgroundColor;
+	
+	ofxControl::getCurrentControl().registerWidget(this);
 }
 
 ofxControlWidget::~ofxControlWidget()
 {
 	ofxControl::getCurrentControl().unregisterWidget(this);
+}
+
+void ofxControlWidget::setLabel(const string &label_) 
+{
+	label = ofToUpper(label_);
+	displayLabel.clear();
+	for (int i = 0; i < label.size(); i++) { displayLabel += toupper(label[i]); }
 }
 
 void ofxControlWidget::hittest()

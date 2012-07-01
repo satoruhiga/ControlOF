@@ -52,19 +52,20 @@ public: // autolayout
 	void setOffset(int x, int y);
 	void linebreak(int extra_margine = 0);
 	
-	ofxControlButton* addButton(string label, int width = 80, int height = 20);
-	ofxControlButton* addButton(string label, bool &value, int width = 80, int height = 20);
+	ofxControlWidget* getControl(string label);
 	
-	ofxControlSliderF* addSliderF(string label, float &value, float min, float max, int width = 180, int height = 14);
-	ofxControlSliderI* addSliderI(string label, int &value, int min, int max, int width = 180, int height = 14);
+	ofxControlButton* addButton(string label, int width = 80, int height = 18);
 	
-	ofxControlRangeSliderF* addRangeSliderF(string label, float &minValue, float &maxValue, float min, float max, int width = 180, int height = 14);
-	ofxControlRangeSliderI* addRangeSliderI(string label, int &minValue, int &maxValue, int min, int max, int width = 180, int height = 14);
+	ofxControlSliderF* addSliderF(string label, float min, float max, int width = 180, int height = 14);
+	ofxControlSliderI* addSliderI(string label, int min, int max, int width = 180, int height = 14);
 	
-	ofxControlNumberBoxF* addNumberBoxF(string label, float &value, int width = 80, int height = 14);
-	ofxControlNumberBoxI* addNumberBoxI(string label, int &value, int width = 80, int height = 14);
+	ofxControlRangeSliderF* addRangeSliderF(string label, float min, float max, int width = 180, int height = 14);
+	ofxControlRangeSliderI* addRangeSliderI(string label, int min, int max, int width = 180, int height = 14);
 	
-	ofxControlTextField* addTextField(string label, string &value, int width = 180, int height = 20);
+	ofxControlNumberBoxF* addNumberBoxF(string label, int width = 80, int height = 14);
+	ofxControlNumberBoxI* addNumberBoxI(string label, int width = 80, int height = 14);
+	
+	ofxControlTextField* addTextField(string label, int width = 180, int height = 20);
 	
 public: // events
 	
@@ -84,6 +85,7 @@ public: // events
 protected:
 	
 	map<GLuint, ofxControlWidget*> widgets;
+	map<string, ofxControlWidget*> widget_map;
 	
 	bool visible;
 	int toggleKey;

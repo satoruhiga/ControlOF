@@ -20,12 +20,7 @@ public:
 	inline const string& getLabel() const { return label; }
 	inline const string& getDisplayLabel() const { return displayLabel; }
 	
-	void setLabel(const string &label_) 
-	{
-		label = label_; 
-		displayLabel.clear();
-		for (int i = 0; i < label.size(); i++) { displayLabel += toupper(label[i]); }
-	}
+	void setLabel(const string &label_);
 	
 	virtual int getWidth() { return rect.width; }
 	virtual int getHeight() { return rect.height; }

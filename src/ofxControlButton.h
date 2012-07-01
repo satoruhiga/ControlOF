@@ -6,6 +6,8 @@ class ofxControlButton : public ofxControlWidget
 {
 private:
 	
+	bool default_value;
+	
 	bool toggle;
 	bool *value;
 	
@@ -14,13 +16,16 @@ public:
 	ofEvent<bool> valueChanged;
 	ofEvent<ofEventArgs> pressed;
 	
-	ofxControlButton(string label, int x, int y, int w = 80, int h = 20)
-		: ofxControlWidget(label, x, y, w, h), value(NULL), toggle(false) {}
+	ofxControlButton(string label, int x, int y, int w = 80, int h = 18)
+		: ofxControlWidget(label, x, y, w, h), default_value(false), value(&default_value), toggle(false) {}
 	
 	~ofxControlButton()
 	{
 		value = NULL;
 	}
+	
+	bool getValue() { return *value; }
+	void setValue(bool v) { *value = v; }
 	
 	void draw()
 	{
