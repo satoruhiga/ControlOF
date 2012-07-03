@@ -5,6 +5,8 @@
 template <typename T>
 class ofxControlSlider : public ofxControlWidget
 {
+protected:
+	
 	T default_value;
 	
 	T *value;

@@ -12,6 +12,7 @@ public:
 	
 	static ofColor defaultTextColor, defaultForegroundColor, defaultBackgroundColor;
 	
+	ofxControlWidget(string label = "");
 	ofxControlWidget(string label, int x, int y, int w, int h);
 	virtual ~ofxControlWidget();
 
@@ -21,6 +22,11 @@ public:
 	inline const string& getDisplayLabel() const { return displayLabel; }
 	
 	void setLabel(const string &label_);
+	
+	void setOffset(const ofVec2f& pos);
+	ofVec2f getOffset();
+	
+	ofVec2f getWorldPos();
 	
 	virtual int getWidth() { return rect.width; }
 	virtual int getHeight() { return rect.height; }
@@ -39,8 +45,8 @@ public:
 	virtual void keyPressed(int key) {}
 	virtual void keyReleased(int key) {}
 	
+	void setParent(ofxControlWidget *o) { parent = o; }
 	ofxControlWidget* getParent() const { return parent; };
-	ofVec2f getWorldPos();
 	
 	void makeCurrentWidget();
 	

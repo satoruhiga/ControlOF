@@ -5,6 +5,8 @@
 #include "ofxControlBitmapString.h"
 #include "ofxControlWidget.h"
 
+#include "ofxControlGroup.h"
+
 #include "ofxControlButton.h"
 #include "ofxControlSlider.h"
 #include "ofxControlRangeSlider.h"
@@ -12,6 +14,7 @@
 #include "ofxControlTextField.h"
 
 class ofxControlWidget;
+
 
 class ofxControl
 {
@@ -22,6 +25,9 @@ class ofxControl
 	
 	ofxControlWidget *currentWidget;
 	ofxControlWidget *responderWidget;
+	
+	ofxControlGroup *currentGroup;
+	stack<ofxControlGroup*> groupStack;
 	
 public:
 
@@ -46,7 +52,7 @@ public:
 	
 public: // autolayout
 	
-	void begin(int x = 0, int y = 0);
+	ofxControlGroup* begin(int x = 0, int y = 0);
 	void end();
 
 	void setOffset(int x, int y);
@@ -116,7 +122,6 @@ private:
 	int autoLayoutStartX, autoLayoutStartY;
 	int autoLayoutMarginX, autoLayoutMarginY;
 	
-	vector<ofxControlWidget*> currentLineWidgets;
-	
-	void applyAutoLayout(ofxControlWidget *w);
+	// vector<ofxControlWidget*> currentLineWidgets;
+	// void applyAutoLayout(ofxControlWidget *w);
 };

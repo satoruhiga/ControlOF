@@ -5,6 +5,8 @@
 template <typename T>
 class ofxControlRangeSlider : public ofxControlWidget
 {
+protected:
+	
 	T default_min_value, default_max_value;
 	
 	T *minValue, *maxValue;

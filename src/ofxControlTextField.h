@@ -4,6 +4,8 @@
 
 class ofxControlTextField : public ofxControlWidget
 {
+protected:
+	
 	string default_value;
 	
 	string *value;

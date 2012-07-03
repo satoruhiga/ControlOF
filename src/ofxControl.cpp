@@ -87,7 +87,10 @@ void ofxControl::draw()
 	while (it != widgets.end())
 	{
 		ofxControlWidget *w = (*it).second;
-		w->draw();
+		
+		if (!w->getParent())
+			w->draw();
+		
 		it++;
 	}
 	
@@ -111,9 +114,14 @@ void ofxControl::hittest()
 	while (it != widgets.end())
 	{
 		ofxControlWidget *w = (*it).second;
-		glPushName(w->getID());
-		w->hittest();
-		glPopName();
+		
+		if (!w->getParent())
+		{
+			glPushName(w->getID());
+			w->hittest();
+			glPopName();			
+		}
+		
 		it++;
 	}
 	
@@ -503,103 +511,88 @@ ofVec2f ofxControl::getLocalPosition(int x, int y)
 ofxControlButton* ofxControl::addButton(string label, int width, int height)
 {
 	ofxControlButton *o = new ofxControlButton(label, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlSliderF* ofxControl::addSliderF(string label, float min, float max, int width, int height) 
 {
 	ofxControlSliderF *o = new ofxControlSliderF(label, min, max, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlSliderI* ofxControl::addSliderI(string label, int min, int max, int width, int height)
 {
 	ofxControlSliderI *o = new ofxControlSliderI(label, min, max, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlRangeSliderF* ofxControl::addRangeSliderF(string label, float min, float max, int width, int height)
 {
 	ofxControlRangeSliderF *o = new ofxControlRangeSliderF(label, min, max, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlRangeSliderI* ofxControl::addRangeSliderI(string label, int min, int max, int width, int height)
 {
 	ofxControlRangeSliderI *o = new ofxControlRangeSliderI(label, min, max, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlNumberBoxF* ofxControl::addNumberBoxF(string label, int width, int height)
 {
 	ofxControlNumberBoxF *o = new ofxControlNumberBoxF(label, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlNumberBoxI* ofxControl::addNumberBoxI(string label, int width, int height)
 {
 	ofxControlNumberBoxI *o = new ofxControlNumberBoxI(label, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 ofxControlTextField* ofxControl::addTextField(string label, int width, int height)
 {
 	ofxControlTextField *o = new ofxControlTextField(label, 0, 0, width, height);
-	applyAutoLayout(o);
+	if (currentGroup) currentGroup->add(o);
 	return o;
 }
 
 #pragma mark AUTOLAYOUT
 
-void ofxControl::begin(int x_, int y_)
+ofxControlGroup* ofxControl::begin(int x, int y)
 {
 	makeCurrentControl();
 	
-	setOffset(x_, y_);
+	currentGroup = new ofxControlGroup;
+	currentGroup->setPosition(x, y, 0);
+	groupStack.push(currentGroup);
+	
+	return currentGroup;
 }
 
 void ofxControl::end()
 {
-	currentControl = NULL;
-	currentLineWidgets.clear();
+	groupStack.pop();
+	
+	if (!groupStack.empty())
+	{
+		currentGroup = groupStack.top();
+	}
+	else
+	{
+		currentGroup = NULL;
+		currentControl = NULL;
+	}
 }
 
 void ofxControl::linebreak(int extra_margine)
 {
-	int lineheight = 0;
-	
-	for (int i = 0; i < currentLineWidgets.size(); i++)
-	{
-		lineheight = std::max(currentLineWidgets[i]->getHeight(), lineheight);
-	}
-	
-	autoLayoutCurrentOffsetY += lineheight + autoLayoutMarginY + extra_margine;
-	autoLayoutCurrentOffsetX = autoLayoutStartX;
-	
-	currentLineWidgets.clear();
-}
-
-void ofxControl::setOffset(int x, int y)
-{
-	currentLineWidgets.clear();
-	
-	autoLayoutStartX = autoLayoutCurrentOffsetX = x;
-	autoLayoutStartY = autoLayoutCurrentOffsetY = y;
-}
-
-void ofxControl::applyAutoLayout(ofxControlWidget *w)
-{
-	w->rect.x = autoLayoutCurrentOffsetX;
-	w->rect.y = autoLayoutCurrentOffsetY;
-	
-	autoLayoutCurrentOffsetX += w->getWidth() + autoLayoutMarginX;
-	
-	currentLineWidgets.push_back(w);
+	if (currentGroup) currentGroup->linebreak(extra_margine);
 }

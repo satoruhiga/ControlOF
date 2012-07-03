@@ -4,7 +4,7 @@
 
 class ofxControlButton : public ofxControlWidget
 {
-private:
+protected:
 	
 	bool default_value;
 	

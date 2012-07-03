@@ -6,6 +6,18 @@ ofColor ofxControlWidget::defaultTextColor(200),
 	ofxControlWidget::defaultForegroundColor(0, 105, 140),
 	ofxControlWidget::defaultBackgroundColor(0, 54, 82, 200);
 
+ofxControlWidget::ofxControlWidget(string label)
+	: parent(NULL), hover(false), down(false), enable(true)
+{
+	setLabel(label);
+	
+	textColor = defaultTextColor;
+	foregroundColor = defaultForegroundColor;
+	backgroundColor = defaultBackgroundColor;
+	
+	ofxControl::getCurrentControl().registerWidget(this);
+}
+
 ofxControlWidget::ofxControlWidget(string label_, int x_, int y_, int w_, int h_)
 	: parent(NULL), hover(false), down(false), enable(true)
 {
@@ -57,4 +69,15 @@ bool ofxControlWidget::isResponder()
 void ofxControlWidget::linebreak(int extra_margine)
 {
 	ofxControl::getCurrentControl().linebreak(extra_margine);
+}
+
+void ofxControlWidget::setOffset(const ofVec2f& pos)
+{
+	rect.x = pos.x;
+	rect.y = pos.y;
+}
+
+ofVec2f ofxControlWidget::getOffset()
+{
+	return ofVec2f(rect.x, rect.y);
 }
