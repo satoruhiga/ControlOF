@@ -30,7 +30,7 @@ public:
 		ofFill();
 		
 		setBackgroundColor();
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		T val = 0;
 		
@@ -42,11 +42,11 @@ public:
 		ofRectangle r = ofxControlGetStringBoundingBox(ofToString(val, 2), 0, 0);
 		float yy = (h() - r.height) * 0.5;
 		
-		ofxControlDrawBitmapString(ofToString(val, 2), x() + 12, y() + yy);
+		ofxControlDrawBitmapString(ofToString(val, 2), 12, yy);
 		
 		setForegroundColor();
 		glPushMatrix();
-		glTranslatef(x(), y() + (h() - 14) * 0.5, 0);
+		glTranslatef(0, (h() - 14) * 0.5, 0);
 		glBegin(GL_TRIANGLES);
 		glVertex2f(0, 0);
 		glVertex2f(6, 14/2);
@@ -57,7 +57,7 @@ public:
 		setTextColor();
 		// ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
 		float c = (h() - r.height) * 0.5;
-		ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
+		ofxControlDrawBitmapString(getDisplayLabel(), w() + 4, c);
 		ofPopStyle();
 	}
 

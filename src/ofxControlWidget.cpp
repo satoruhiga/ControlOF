@@ -7,7 +7,7 @@ ofColor ofxControlWidget::defaultTextColor(200),
 	ofxControlWidget::defaultBackgroundColor(0, 54, 82, 200);
 
 ofxControlWidget::ofxControlWidget(string label)
-	: parent(NULL), hover(false), down(false), enable(true)
+	: hover(false), down(false), enable(true)
 {
 	setLabel(label);
 	
@@ -19,11 +19,12 @@ ofxControlWidget::ofxControlWidget(string label)
 }
 
 ofxControlWidget::ofxControlWidget(string label_, int x_, int y_, int w_, int h_)
-	: parent(NULL), hover(false), down(false), enable(true)
+	: hover(false), down(false), enable(true)
 {
 	setLabel(label_);
 	
-	rect.set(x_, y_ ,w_, h_);
+	setPosition(x_, y_, 0);
+	setSize(w_, h_);
 	
 	textColor = defaultTextColor;
 	foregroundColor = defaultForegroundColor;
@@ -46,14 +47,7 @@ void ofxControlWidget::setLabel(const string &label_)
 
 void ofxControlWidget::hittest()
 {
-	ofRect(rect.x, rect.y, rect.width, rect.height);
-}
-
-ofVec2f ofxControlWidget::getWorldPos()
-{
-	ofVec2f result(x(), y());
-	if (getParent()) result += getParent()->getWorldPos();
-	return result;
+	ofRect(0, 0, getWidth(), getHeight());
 }
 
 void ofxControlWidget::makeCurrentWidget()
@@ -71,13 +65,12 @@ void ofxControlWidget::linebreak(int extra_margine)
 	ofxControl::getCurrentControl().linebreak(extra_margine);
 }
 
-void ofxControlWidget::setOffset(const ofVec2f& pos)
+void ofxControlWidget::setOffset(const ofVec3f& pos)
 {
-	rect.x = pos.x;
-	rect.y = pos.y;
+	setPosition(pos);
 }
 
-ofVec2f ofxControlWidget::getOffset()
+ofVec3f ofxControlWidget::getOffset()
 {
-	return ofVec2f(rect.x, rect.y);
+	return getPosition();
 }

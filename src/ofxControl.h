@@ -103,7 +103,7 @@ private:
 	
 	GLint viewport[4];
 	GLdouble projection[16], modelview[16];
-	GLuint currentWidgetDepth;
+	float currentWidgetDepth;
 	
 	struct Selection
 	{
@@ -114,7 +114,7 @@ private:
 	static bool sort_by_depth(const ofxControl::Selection &a, const ofxControl::Selection &b);
 	vector<Selection> pickup(int x, int y);
 
-	ofVec2f getLocalPosition(int x, int y);
+	ofVec3f getLocalPosition(int x, int y);
 	
 private:
 	

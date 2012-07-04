@@ -89,7 +89,11 @@ void ofxControl::draw()
 		ofxControlWidget *w = (*it).second;
 		
 		if (!w->getParent())
+		{
+			w->transformGL();
 			w->draw();
+			w->restoreTransformGL();
+		}
 		
 		it++;
 	}
@@ -117,9 +121,12 @@ void ofxControl::hittest()
 		
 		if (!w->getParent())
 		{
+			
+			w->transformGL();
 			glPushName(w->getID());
 			w->hittest();
-			glPopName();			
+			glPopName();
+			w->restoreTransformGL();
 		}
 		
 		it++;
@@ -269,15 +276,14 @@ void ofxControl::onMousePressed(ofMouseEventArgs &e)
 	if (!p.empty())
 	{
 		Selection &s = p[0];
-		
-		currentWidgetDepth = s.min_depth;
+		currentWidgetDepth = (float)s.min_depth / 0xffffffff;
 		
 		for (int i = 0; i < s.name_stack.size(); i++)
 		{
 			ofxControlWidget *w = widgets[s.name_stack.at(i)];
-			ofVec2f localPos = getLocalPosition(m.x, m.y);
-			ofVec2f p = localPos - w->getWorldPos();
-			
+			ofVec3f p = getLocalPosition(m.x, m.y);
+			p = w->getGlobalTransformMatrix().getInverse().preMult(p);
+
 			w->mousePressed(p.x, p.y, e.button);
 			
 			w->hover = true;
@@ -313,12 +319,13 @@ void ofxControl::onMouseReleased(ofMouseEventArgs &e)
 	if (!p.empty())
 	{
 		Selection &s = p[0];
+		currentWidgetDepth = (float)s.min_depth / 0xffffffff;
 		
 		for (int i = 0; i < s.name_stack.size(); i++)
 		{
 			ofxControlWidget *w = widgets[s.name_stack.at(i)];
-			ofVec2f localPos = getLocalPosition(m.x, m.y);
-			ofVec2f p = localPos - w->getWorldPos();
+			ofVec3f p = getLocalPosition(m.x, m.y);
+			p = w->getGlobalTransformMatrix().getInverse().preMult(p);
 			
 			w->mouseReleased(p.x, p.y, e.button);
 			w->hover = true;
@@ -353,12 +360,13 @@ void ofxControl::onMouseMoved(ofMouseEventArgs &e)
 	if (!p.empty())
 	{
 		Selection &s = p[0];
+		currentWidgetDepth = (float)s.min_depth / 0xffffffff;
 		
 		for (int i = 0; i < s.name_stack.size(); i++)
 		{
 			ofxControlWidget *w = widgets[s.name_stack.at(i)];
-			ofVec2f localPos = getLocalPosition(m.x, m.y);
-			ofVec2f p = localPos - w->getWorldPos();
+			ofVec3f p = getLocalPosition(m.x, m.y);
+			p = w->getGlobalTransformMatrix().getInverse().preMult(p);
 			
 			w->mouseMoved(p.x, p.y);
 			w->hover = true;
@@ -391,12 +399,13 @@ void ofxControl::onMouseDragged(ofMouseEventArgs &e)
 		if (!p.empty())
 		{
 			Selection &s = p[0];
+			currentWidgetDepth = (float)s.min_depth / 0xffffffff;
 			
 			for (int i = 0; i < s.name_stack.size(); i++)
 			{
 				ofxControlWidget *w = widgets[s.name_stack.at(i)];
-				ofVec2f localPos = getLocalPosition(m.x, m.y);
-				ofVec2f p = localPos - w->getWorldPos();
+				ofVec3f p = getLocalPosition(m.x, m.y);
+				p = w->getGlobalTransformMatrix().getInverse().preMult(p);
 				
 				w->mouseDragged(p.x, p.y, e.button);
 				w->hover = true;
@@ -408,9 +417,9 @@ void ofxControl::onMouseDragged(ofMouseEventArgs &e)
 	
 	if (forcus_is_out && currentWidget)
 	{
-		ofVec2f localPos = getLocalPosition(m.x, m.y);
-		ofVec2f p = localPos - currentWidget->getWorldPos();
-		
+		ofVec3f p = getLocalPosition(m.x, m.y);
+		p = currentWidget->getGlobalTransformMatrix().getInverse().preMult(p);
+
 		currentWidget->mouseDragged(p.x, p.y, e.button);
 		currentWidget->hover = true;
 	}
@@ -492,11 +501,11 @@ vector<ofxControl::Selection> ofxControl::pickup(int x, int y)
 	return picked_stack;
 }
 
-ofVec2f ofxControl::getLocalPosition(int x, int y)
+ofVec3f ofxControl::getLocalPosition(int x, int y)
 {
 	GLdouble ox, oy, oz;
 	
-	gluUnProject(x, y, (float)currentWidgetDepth / (float)0xffffffff,
+	gluUnProject(x, y, currentWidgetDepth,
 				 modelview, projection, viewport,
 				 &ox, &oy, &oz);
 	

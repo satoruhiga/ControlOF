@@ -36,7 +36,7 @@ public:
 
 		setBackgroundColor();
 		ofFill();
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		setTextColor();
 		if (value)
@@ -44,7 +44,7 @@ public:
 			ofRectangle r = ofxControlGetStringBoundingBox(*value, 0, 0);
 			float c = (h() - r.height) * 0.5;
 
-			ofxControlDrawBitmapString(*value, x() + 4, y() + c);
+			ofxControlDrawBitmapString(*value, 4, c);
 			
 			if (editable)
 			{
@@ -53,25 +53,25 @@ public:
 					caretPos = ofClamp(caretPos, 0, (*value).size());
 					
 					string ss = value->substr(0, caretPos);
-					ofRectangle r = ofxControlGetStringBoundingBox(ss, x() + 4, y() + 6);
+					ofRectangle r = ofxControlGetStringBoundingBox(ss, 4, 6);
 					
 					int xx = r.x + r.width;
-					int yy = y() + 14;
+					int yy = 14;
 					ofLine(xx, yy, xx + 4, yy);
 				}
 			}
 		}
 		else
 		{
-			ofxControlDrawBitmapString("NONE", x() + 4, y() + 6);
+			ofxControlDrawBitmapString("NONE", 4, 6);
 		}
 		
 		setForegroundColor();
 		ofNoFill();
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		setTextColor();
-		ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
+		ofxControlDrawBitmapString(getDisplayLabel(), 0, h() + 4);
 
 		ofPopStyle();
 	}

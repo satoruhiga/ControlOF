@@ -51,7 +51,7 @@ public:
 		ofFill();
 
 		setBackgroundColor();
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		setForegroundColor();
 		
@@ -68,49 +68,49 @@ public:
 		{
 			int xx1 = w() * ofMap(minVal, min, max, 0, 1, true);
 			int xx2 = w() * ofMap(maxVal, min, max, 0, 1, true);
-			ofRect(x() + xx1, y(), xx2 - xx1, h());
+			ofRect(xx1, 0, xx2 - xx1, h());
 			
 			setTextColor();
 			
 			ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
 			float c = (h() - r.height) * 0.5;
-			ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
+			ofxControlDrawBitmapString(getDisplayLabel(), w() + 4, c);
 			
 			if (minValue)
 			{
 				ofRectangle r = ofxControlGetStringBoundingBox(ofToString(maxVal, 2), 0, 0);
 				float xx = w() - r.width - 4;
 				
-				ofxControlDrawBitmapString(ofToString(minVal, 2), x() + 4, y() + c);
-				ofxControlDrawBitmapString(ofToString(maxVal, 2), x() + xx, y() + c);
+				ofxControlDrawBitmapString(ofToString(minVal, 2), 4, c);
+				ofxControlDrawBitmapString(ofToString(maxVal, 2), xx, c);
 			}
 			else
 			{
 				ofRectangle r1 = ofxControlGetStringBoundingBox("NULL", 0, 0);
 				float yy = (h() - r1.height) * 0.5;
 
-				ofxControlDrawBitmapString("NULL", x() + 4, y() + yy);
+				ofxControlDrawBitmapString("NULL", 4, yy);
 			}
 		}
 		else
 		{
 			int yy1 = h() * -ofMap(minVal, min, max, 0, 1, true);
 			int yy2 = h() * -ofMap(maxVal, min, max, 0, 1, true);
-			ofRect(x(), y() + h() + yy1, w(), yy2 - yy1);
+			ofRect(0, h() + yy1, w(), yy2 - yy1);
 
 			setTextColor();
-			ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
+			ofxControlDrawBitmapString(getDisplayLabel(), 0, h() + 4);
 			
 			if (minValue)
 			{
-				ofxControlDrawBitmapString(ofToString(minVal, 2), x() + w() + 4, y() + h() + yy1 - 8);
-				ofxControlDrawBitmapString(ofToString(maxVal, 2), x() + w() + 4, y() + h() + yy2 - 8);
+				ofxControlDrawBitmapString(ofToString(minVal, 2), w() + 4, h() + yy1 - 8);
+				ofxControlDrawBitmapString(ofToString(maxVal, 2), w() + 4, h() + yy2 - 8);
 
 			}
 			else
 			{
-				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy1 - 8);
-				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy2 - 8);
+				ofxControlDrawBitmapString("NULL", w() + 4, h() + yy1 - 8);
+				ofxControlDrawBitmapString("NULL", w() + 4, h() + yy2 - 8);
 			}
 		}
 		

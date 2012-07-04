@@ -29,7 +29,7 @@ public:
 		ofFill();
 
 		setBackgroundColor();
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		setForegroundColor();
 		
@@ -45,32 +45,32 @@ public:
 		if (w() > h())
 		{
 			int xx = w() * v;
-			ofRect(x(), y(), xx, h());
+			ofRect(0, 0, xx, h());
 			
 			setTextColor();
 
 			ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
 			float c = (h() - r.height) * 0.5;
 			
-			ofxControlDrawBitmapString(getDisplayLabel(), x() + w() + 4, y() + c);
+			ofxControlDrawBitmapString(getDisplayLabel(), w() + 4, c);
 			
 			if (value)
-				ofxControlDrawBitmapString(ofToString(val, 2), x() + 4, y() + c);
+				ofxControlDrawBitmapString(ofToString(val, 2), 4, c);
 			else
-				ofxControlDrawBitmapString("NULL", x() + 4, y() + 2);
+				ofxControlDrawBitmapString("NULL", 4, 2);
 		}
 		else
 		{
 			int yy = h() * -v;
-			ofRect(x(), y() + h(), w(), yy);
+			ofRect(0, h(), w(), yy);
 
 			setTextColor();
-			ofxControlDrawBitmapString(getDisplayLabel(), x(), y() + h() + 4);
+			ofxControlDrawBitmapString(getDisplayLabel(), 0, h() + 4);
 			
 			if (value)
-				ofxControlDrawBitmapString(ofToString(val, 2), x() + w() + 4, y() + h() + yy - 8);
+				ofxControlDrawBitmapString(ofToString(val, 2), w() + 4, h() + yy - 8);
 			else
-				ofxControlDrawBitmapString("NULL", x() + w() + 4, y() + h() + yy - 8);
+				ofxControlDrawBitmapString("NULL", w() + 4, h() + yy - 8);
 		}
 		
 		ofPopStyle();

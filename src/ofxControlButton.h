@@ -47,13 +47,13 @@ public:
 				setBackgroundColor();
 		}
 		
-		ofRect(x(), y(), w(), h());
+		ofRect(0, 0, w(), h());
 		
 		ofRectangle r = ofxControlGetStringBoundingBox(getDisplayLabel(), 0, 0);
 		float c = (h() - r.height) * 0.5;
 		
 		setTextColor();
-		ofxControlDrawBitmapString(getDisplayLabel(), x() + 4, y() + c);
+		ofxControlDrawBitmapString(getDisplayLabel(), 4, c);
 		ofPopStyle();
 	}
 

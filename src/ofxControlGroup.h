@@ -2,7 +2,7 @@
 
 #include "ofxControlWidget.h"
 
-class ofxControlGroup : public ofNode, public ofxControlWidget
+class ofxControlGroup : public ofxControlWidget
 {
 public:
 	

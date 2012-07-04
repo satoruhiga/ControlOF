@@ -79,26 +79,29 @@ void ofxControlGroup::updateLayout()
 
 void ofxControlGroup::draw()
 {
-	transformGL();
-	
 	for (int i = 0; i < widgets.size(); i++)
-		widgets[i]->draw();
-	
-	restoreTransformGL();
+	{
+		ofxControlWidget *w = widgets[i];
+		
+		glPushMatrix();
+		glMultMatrixf(w->getLocalTransformMatrix().getPtr());
+		w->draw();
+		glPopMatrix();
+	}
 }
 
 
 void ofxControlGroup::hittest()
 {
-	transformGL();
-	
 	for (int i = 0; i < widgets.size(); i++)
 	{
 		ofxControlWidget *w = widgets[i];
+		
+		glPushMatrix();
+		glMultMatrixf(w->getLocalTransformMatrix().getPtr());
 		glPushName(w->getID());
 		w->hittest();
 		glPopName();
+		glPopMatrix();
 	}
-
-	restoreTransformGL();
 }

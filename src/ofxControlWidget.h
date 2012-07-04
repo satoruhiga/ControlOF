@@ -4,7 +4,7 @@
 
 class ofxControl;
 
-class ofxControlWidget
+class ofxControlWidget : public ofNode
 {
 	friend class ofxControl;
 	
@@ -23,13 +23,11 @@ public:
 	
 	void setLabel(const string &label_);
 	
-	void setOffset(const ofVec2f& pos);
-	ofVec2f getOffset();
+	void setOffset(const ofVec3f& pos);
+	ofVec3f getOffset();
 	
-	ofVec2f getWorldPos();
-	
-	virtual int getWidth() { return rect.width; }
-	virtual int getHeight() { return rect.height; }
+	virtual int getWidth() { return w(); }
+	virtual int getHeight() { return h(); }
 	
 	inline void setEnable(bool yn) { enable = yn; }
 	inline bool isEnable() { return enable; }
@@ -46,7 +44,7 @@ public:
 	virtual void keyReleased(int key) {}
 	
 	void setParent(ofxControlWidget *o) { parent = o; }
-	ofxControlWidget* getParent() const { return parent; };
+	ofxControlWidget* getParent() const { return (ofxControlWidget*)parent; };
 	
 	void makeCurrentWidget();
 	
@@ -55,14 +53,18 @@ public:
 protected:
 	
 	bool enable;
-	ofRectangle rect;
+	ofVec2f size;
 	string label, displayLabel;
 	ofColor textColor, foregroundColor, backgroundColor;
 	
-	int x() const { return rect.x; }
-	int y() const { return rect.y; }
-	int w() const { return rect.width; }
-	int h() const { return rect.height; }
+	inline int x() const { return getX(); }
+	inline int y() const { return getY(); }
+	inline int w() const { return size.x; }
+	inline int h() const { return size.y; }
+	
+	inline void setWidth(int v) { size.x = v; }
+	inline void setHeight(int v) { size.y = v; }
+	inline void setSize(int w, int h) { size.set(w, h); }
 	
 	bool isHover() { return hover; }
 	bool isDown() { return down; }
@@ -91,6 +93,5 @@ protected:
 private:
 	int widgetID;
 	bool hover, down;
-	ofxControlWidget *parent;
 	
 };
