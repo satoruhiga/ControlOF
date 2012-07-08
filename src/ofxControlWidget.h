@@ -48,7 +48,7 @@ public:
 	
 	void makeCurrentWidget();
 	
-	void linebreak(int extra_margine = 0);
+	void addLinebreak(int extra_margine = 0);
 	
 protected:
 	

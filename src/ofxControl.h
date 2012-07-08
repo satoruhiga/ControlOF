@@ -32,6 +32,8 @@ class ofxControl
 public:
 
 	static ofxControl& getCurrentControl() { return *currentControl; }
+	static bool hasFocus() { return currentControl != NULL && currentControl->responderWidget != NULL; }
+	
 	void makeCurrentControl() { currentControl = this; }
 	
 	ofxControlWidget* getCurrentResponderWidget() { return responderWidget; }
@@ -56,7 +58,9 @@ public: // autolayout
 	void end();
 
 	void setOffset(int x, int y);
-	void linebreak(int extra_margine = 0);
+	
+	void addLinebreak(int extra_margine = 0);
+	void addSeparator(int extra_margine = 0);
 	
 	ofxControlWidget* getControl(string label);
 	
@@ -116,12 +120,4 @@ private:
 
 	ofVec3f getLocalPosition(int x, int y);
 	
-private:
-	
-	int autoLayoutCurrentOffsetX, autoLayoutCurrentOffsetY;
-	int autoLayoutStartX, autoLayoutStartY;
-	int autoLayoutMarginX, autoLayoutMarginY;
-	
-	// vector<ofxControlWidget*> currentLineWidgets;
-	// void applyAutoLayout(ofxControlWidget *w);
 };

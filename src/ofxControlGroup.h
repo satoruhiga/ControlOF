@@ -18,7 +18,8 @@ public:
 	};
 	
 	void setLayoutDirection(LayoutDirecton dir_) { dir = dir_; updateLayout(); }
-	void linebreak(int extra_mergine = 0);
+	void addLinebreak(int extra_mergine = 0);
+	void addSeparator(int extra_mergine = 0);
 	
 	void draw();
 	void hittest();

@@ -11,12 +11,6 @@ ofxControl::ofxControl()
 	visible = true;
 	currentWidget = NULL;
 	responderWidget = NULL;
-	
-	autoLayoutStartX = 0;
-	autoLayoutStartY = 0;
-	
-	autoLayoutMarginX = 20;
-	autoLayoutMarginY = 10;
 }
 
 ofxControl::~ofxControl()
@@ -336,6 +330,7 @@ void ofxControl::onMouseReleased(ofMouseEventArgs &e)
 	{
 		currentWidget->down = false;
 		currentWidget = NULL;
+		responderWidget = NULL;
 	}
 }
 
@@ -601,7 +596,12 @@ void ofxControl::end()
 	}
 }
 
-void ofxControl::linebreak(int extra_margine)
+void ofxControl::addLinebreak(int extra_margine)
 {
-	if (currentGroup) currentGroup->linebreak(extra_margine);
+	if (currentGroup) currentGroup->addLinebreak(extra_margine);
+}
+
+void ofxControl::addSeparator(int extra_margine)
+{
+	if (currentGroup) currentGroup->addSeparator(extra_margine);
 }

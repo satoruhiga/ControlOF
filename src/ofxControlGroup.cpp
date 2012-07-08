@@ -35,9 +35,14 @@ void ofxControlGroup::remove(ofxControlWidget *o)
 	updateLayout();
 }
 
-void ofxControlGroup::linebreak(int extra_mergine)
+void ofxControlGroup::addLinebreak(int extra_mergine)
 {
 	add(new ofxControlSeparator("", extra_mergine));
+}
+
+void ofxControlGroup::addSeparator(int extra_mergine)
+{
+	add(new ofxControlSeparator("-", extra_mergine));
 }
 
 //
@@ -58,10 +63,17 @@ void ofxControlGroup::updateLayout()
 			
 			if (ofxControlSeparator *sep = dynamic_cast<ofxControlSeparator*>(w))
 			{
-				layout_pos.x += max_size + margin + sep->getExtraMargine();
-				layout_pos.y = 0;
-				
-				max_size = 0;
+				if (sep->getLabel() == "-")
+				{
+					layout_pos.y += 10 + sep->getExtraMargine();
+				}
+				else
+				{
+					layout_pos.x += max_size + margin + sep->getExtraMargine();
+					layout_pos.y = 0;
+					
+					max_size = 0;
+				}
 			}
 			else
 			{

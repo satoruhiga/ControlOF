@@ -60,9 +60,9 @@ bool ofxControlWidget::isResponder()
 	return ofxControl::getCurrentControl().getCurrentResponderWidget() == this;
 }
 
-void ofxControlWidget::linebreak(int extra_margine)
+void ofxControlWidget::addLinebreak(int extra_margine)
 {
-	ofxControl::getCurrentControl().linebreak(extra_margine);
+	ofxControl::getCurrentControl().addLinebreak(extra_margine);
 }
 
 void ofxControlWidget::setOffset(const ofVec3f& pos)
