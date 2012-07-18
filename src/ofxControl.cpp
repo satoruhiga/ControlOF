@@ -330,7 +330,6 @@ void ofxControl::onMouseReleased(ofMouseEventArgs &e)
 	{
 		currentWidget->down = false;
 		currentWidget = NULL;
-		responderWidget = NULL;
 	}
 }
 
