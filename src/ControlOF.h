@@ -10,3 +10,6 @@
 #include "ofxControlTextField.h"
 #include "ofxControlRangeSlider.h"
 #include "ofxControlNumberBox.h"
+
+#include "ofxControlColorSwatch.h"
+#include "ofxControlColorPicker.h"

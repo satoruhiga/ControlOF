@@ -32,7 +32,6 @@ public:
 		
 		ofPushStyle();
 		
-		
 		setBackgroundColor();
 		
 		ofFill();

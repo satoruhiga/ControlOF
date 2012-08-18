@@ -24,14 +24,22 @@ public:
 	
 	void draw()
 	{
+		ofPushStyle();
+		ofFill();
+
+		setBackgroundColor();
+		ofRect(0, 0, w(), h());
+		
 		ofSetColor(255);
 		picker_image.draw(margin, margin);
 		
-		ofSetColor(255);
+		ofSetColor(color);
 		ofCircle(corsor_pos, 4);
 		
-		ofSetColor(color);
-		ofCircle(corsor_pos, 3);
+		ofSetColor(255);
+		ofCircle(corsor_pos, 2);
+		
+		ofPopStyle();
 	}
 	
 	void mousePressed(int x, int y, int button)
@@ -57,15 +65,15 @@ protected:
 	
 	void updateColorPicker()
 	{
-		picker_image.allocate(w(), h(), OF_IMAGE_COLOR);
+		picker_image.allocate(w() - margin * 2, h() - margin * 2, OF_IMAGE_COLOR);
 		
-		for (int y = 0; y < h(); y++)
+		for (int y = 0; y < picker_image.getHeight(); y++)
 		{
-			for (int x = 0; x < w(); x++)
+			for (int x = 0; x < picker_image.getWidth(); x++)
 			{
-				ofColor c = HSL2RGB(ofMap(x, 0, w(), 0, 1),
+				ofColor c = HSL2RGB(ofMap(x, 0, picker_image.getWidth(), 0, 1),
 											 1,
-											 ofMap(y, 0, h(), 1, 0));
+											 ofMap(y, 0, picker_image.getHeight(), 1, 0));
 				picker_image.setColor(x, y, c);
 			}
 		}
