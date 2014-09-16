@@ -153,7 +153,7 @@ public:
 		if (temp != pair<T, T>(*minValue, *maxValue))
 		{
 			temp = pair<T, T>(*minValue, *maxValue);
-			ofNotifyEvent(valueChanged, temp);
+			ofNotifyEvent(valueChanged, temp, this);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public:
 		if (temp != pair<T, T>(*minValue, *maxValue))
 		{
 			temp = pair<T, T>(*minValue, *maxValue);
-			ofNotifyEvent(valueChanged, temp);
+			ofNotifyEvent(valueChanged, temp, this);
 		}
 	}
 	

@@ -107,10 +107,10 @@ public:
 			caretPos = ofClamp(caretPos, 0, (*value).size());
 		}
 		
-		if (temp != *value) ofNotifyEvent(valueChanged, *value);
+		if (temp != *value) ofNotifyEvent(valueChanged, *value, this);
 		
 		static ofEventArgs args;
-		if (key == OF_KEY_RETURN) ofNotifyEvent(enterPressed, *value);
+		if (key == OF_KEY_RETURN) ofNotifyEvent(enterPressed, *value, this);
 	}
 	
 	ofxControlTextField* bind(string *value_) { value = value_; return this; }

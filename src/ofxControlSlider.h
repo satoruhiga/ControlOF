@@ -94,7 +94,7 @@ public:
 		
 		if (temp != *value)
 		{
-			ofNotifyEvent(valueChanged, *value);
+			ofNotifyEvent(valueChanged, *value, this);
 		}
 	}
 	
@@ -115,7 +115,7 @@ public:
 		
 		if (temp != *value)
 		{
-			ofNotifyEvent(valueChanged, *value);
+			ofNotifyEvent(valueChanged, *value, this);
 		}
 	}
 	

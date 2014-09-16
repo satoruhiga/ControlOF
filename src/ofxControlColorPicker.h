@@ -100,8 +100,8 @@ protected:
 		
 		updateCursor();
 		
-		ofNotifyEvent(valueChanged, *value);
-		ofNotifyEvent(colorChanged, color);
+		ofNotifyEvent(valueChanged, *value, this);
+		ofNotifyEvent(colorChanged, color, this);
 	}
 
 	

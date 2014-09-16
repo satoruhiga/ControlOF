@@ -80,8 +80,8 @@ public:
 			*value = index;
 			color.setHex(colors[*value]);
 			
-			ofNotifyEvent(valueChanged, *value);
-			ofNotifyEvent(colorChanged, color);
+			ofNotifyEvent(valueChanged, *value, this);
+			ofNotifyEvent(colorChanged, color, this);
 		}
 	}
 	

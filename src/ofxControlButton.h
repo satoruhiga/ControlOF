@@ -73,14 +73,14 @@ public:
 	void mousePressed(int,int,int)
 	{
 		static ofEventArgs args;
-		ofNotifyEvent(pressed, args);
+		ofNotifyEvent(pressed, args, this);
 		
 		if (!value) return;
 		
 		if (toggle)
 		{
 			*value = !*value;
-			ofNotifyEvent(valueChanged, *value);
+			ofNotifyEvent(valueChanged, *value, this);
 		}
 		else
 		{

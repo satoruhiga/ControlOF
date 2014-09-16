@@ -86,7 +86,7 @@ public:
 		if (clamp)
 			*value = ofClamp(*value, min, max);
 		
-		ofNotifyEvent(valueChanged, *value);
+		ofNotifyEvent(valueChanged, *value, this);
 		
 		temp = y_;
 	}
